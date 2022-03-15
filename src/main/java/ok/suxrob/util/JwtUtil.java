@@ -2,6 +2,7 @@ package ok.suxrob.util;
 
 import io.jsonwebtoken.*;
 import ok.suxrob.dto.profileDTO.ProfileJwtDTO;
+import ok.suxrob.enums.ProfileRole;
 import ok.suxrob.enums.ProfileType;
 import ok.suxrob.exceptions.ForbiddenException;
 import ok.suxrob.exceptions.UnauthorizedException;
@@ -22,14 +23,14 @@ public class JwtUtil {
         return jwtBuilder.compact();
     }
 
-    public static String createJwt(Integer id, ProfileType type) {
+    public static String createJwt(Integer id, ProfileRole role) {
         JwtBuilder jwtBuilder = Jwts.builder();
         jwtBuilder.setSubject(String.valueOf(id));
         jwtBuilder.setIssuedAt(new Date());
         jwtBuilder.signWith(SignatureAlgorithm.HS256, secretKey);
         jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + (60 * 60 * 1000)));
         jwtBuilder.setIssuer("avtobor");
-        jwtBuilder.claim("type", type.name());
+        jwtBuilder.claim("role", role.name());
         return jwtBuilder.compact();
     }
 
@@ -41,7 +42,7 @@ public class JwtUtil {
 
         Claims claims = (Claims) jws.getBody();
         String id = claims.getSubject();
-        ProfileType profileType = ProfileType.valueOf((String) claims.get("type"));
+        ProfileType profileType = ProfileType.valueOf((String) claims.get("role"));
 
         return new ProfileJwtDTO(Integer.parseInt(id), profileType);
     }
@@ -57,7 +58,7 @@ public class JwtUtil {
         return Integer.valueOf(claims.getSubject());
     }
 
-    public static ProfileJwtDTO getProfile(HttpServletRequest request, ProfileType required) {
+    public static ProfileJwtDTO getProfile(HttpServletRequest request, ProfileRole required) {
         ProfileJwtDTO jwtDTO = (ProfileJwtDTO) request.getAttribute("jwtDTO");
         if (jwtDTO == null) {
             throw new UnauthorizedException("Not authorized");

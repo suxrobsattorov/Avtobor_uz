@@ -17,4 +17,7 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Integer>
 
     @Query("select p.phone from ProfileEntity p where p.phone=?1")
     String phoneCheck(String phone);
+
+    @Query("select p.password from ProfileEntity p where p.password=?1")
+    String passwordCheck(String password);
 }

@@ -2,6 +2,7 @@ package ok.suxrob.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import ok.suxrob.enums.ProfileRole;
 import ok.suxrob.enums.ProfileType;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class ProfileEntity {
     private String phone;
     @Column(nullable = false)
     private String password;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ProfileRole role;
     @Column
     private String companyName;
     @Column

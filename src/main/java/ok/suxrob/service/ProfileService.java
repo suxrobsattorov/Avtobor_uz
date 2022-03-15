@@ -1,14 +1,16 @@
 package ok.suxrob.service;
 
 import ok.suxrob.dto.profileDTO.ProfileDTO;
+import ok.suxrob.dto.profileDTO.ProfileUpdateDTO;
+import ok.suxrob.dto.profileDTO.ProfileUpdatePasswordDTO;
 import ok.suxrob.entity.ProfileEntity;
+import ok.suxrob.enums.ProfileType;
 import ok.suxrob.exceptions.BadRequestException;
 import ok.suxrob.repository.ProfileRepository;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +30,7 @@ public class ProfileService {
         entity.setPhone(dto.getPhone());
         entity.setPassword(password);
         dto.setProfileType(dto.getProfileType());
+        entity.setRole(dto.getRole());
         if (dto.getCompanyName() != null || !dto.getCompanyName().isEmpty()) {
             entity.setCompanyName(dto.getCompanyName());
         }
@@ -55,6 +58,40 @@ public class ProfileService {
         return toDTO(optional.get());
     }
 
+    public boolean changePassword(ProfileUpdatePasswordDTO dto, Integer profileId) {
+        ProfileEntity entity = get(profileId);
+        String oldPassword = profileRepository.passwordCheck(dto.getOldPassword());
+        if (oldPassword != null) {
+            throw new BadRequestException("Password not found");
+        }
+        if (!dto.getNewPassword().equals(dto.getReenterPassword())) {
+            throw new BadRequestException("New password not equals reenter passvord");
+        }
+        entity.setPassword(dto.getNewPassword());
+        profileRepository.save(entity);
+        return true;
+    }
+
+    public boolean update(ProfileUpdateDTO dto, Integer profileId) {
+        ProfileEntity entity = get(profileId);
+        entity.setFirstName(dto.getName());
+        entity.setLastName(dto.getSurname());
+        entity.setEmail(dto.getEmail());
+        entity.setPhone(dto.getPhone());
+        if (entity.getProfileType().equals(ProfileType.COMPANY) || entity.getProfileType().equals(ProfileType.SHOWROOM)) {
+            entity.setCompanyName(dto.getCompanyName());
+            entity.setAddress(dto.getAddress());
+        }
+        profileRepository.save(entity);
+        return true;
+    }
+
+    public boolean delete(Integer profileId) {
+        ProfileEntity entity = get(profileId);
+        profileRepository.delete(entity);
+        return true;
+    }
+
     public ProfileDTO toDTO(ProfileEntity entity) {
         ProfileDTO dto = new ProfileDTO();
         dto.setId(entity.getId());
@@ -64,6 +101,7 @@ public class ProfileService {
         dto.setPhone(entity.getPhone());
         dto.setPassword(entity.getPassword());
         dto.setProfileType(entity.getProfileType());
+        dto.setRole(entity.getRole());
         dto.setCompanyName(entity.getCompanyName());
         dto.setAddress(entity.getAddress());
         dto.setAboutUs(entity.getAboutUs());

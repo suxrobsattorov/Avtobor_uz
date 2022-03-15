@@ -2,6 +2,7 @@ package ok.suxrob.dto.profileDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import ok.suxrob.enums.ProfileRole;
 import ok.suxrob.enums.ProfileType;
 
 import javax.validation.constraints.Email;
@@ -24,6 +25,8 @@ public class ProfileDTO {
     private String phone;
     @NotEmpty(message = "password must not be empty or null")
     private String password;
+    @NotEmpty(message = "role must not be empty or null")
+    private ProfileRole role;
     private String companyName;
     private String address;
     private Boolean consent;

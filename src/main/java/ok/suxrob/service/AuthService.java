@@ -4,6 +4,7 @@ import ok.suxrob.dto.auth.AuthDTO;
 import ok.suxrob.dto.auth.RegistrationDTO;
 import ok.suxrob.dto.profileDTO.ProfileDTO;
 import ok.suxrob.entity.ProfileEntity;
+import ok.suxrob.enums.ProfileRole;
 import ok.suxrob.enums.ProfileType;
 import ok.suxrob.exceptions.BadRequestException;
 import ok.suxrob.repository.ProfileRepository;
@@ -29,7 +30,7 @@ public class AuthService {
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO.setName(optional.get().getFirstName());
         profileDTO.setSurname(optional.get().getLastName());
-        profileDTO.setJwt(JwtUtil.createJwt(optional.get().getId(), optional.get().getProfileType()));
+        profileDTO.setJwt(JwtUtil.createJwt(optional.get().getId(), optional.get().getRole()));
         return profileDTO;
     }
 
@@ -47,6 +48,7 @@ public class AuthService {
         entity.setEmail(dto.getEmail());
         entity.setPhone(dto.getPhone());
         entity.setPassword(dto.getPassword());
+        entity.setRole(ProfileRole.USER);
         if (dto.getProfileType().equals(ProfileType.COMPANY) || dto.getProfileType().equals(ProfileType.SHOWROOM)) {
             entity.setCompanyName(dto.getCompanyName());
             entity.setAboutUs(dto.getAddress());
