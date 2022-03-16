@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AddListingDTO {
+public class AnnouncementDTO {
     private Integer id;
     @NotBlank(message = "name must not be empty or null")
     private String name;
@@ -24,6 +24,7 @@ public class AddListingDTO {
     @NotEmpty(message = "iWantTo must not be empty or null")
     private IWantTo iWantTo;
     //make,
+    private String make;
     @NotEmpty(message = "region must not be empty or null")
     private Region region;
     @NotEmpty(message = "paymentType must not be empty or null")
@@ -32,7 +33,9 @@ public class AddListingDTO {
     @NotEmpty(message = "priceType must not be empty or null")
     private PriceType priceType;
     //Parameters
+    private String parameters;
     //Conditions
+    private String conditions;
     private String description;
     //photos
     //Confirmation code

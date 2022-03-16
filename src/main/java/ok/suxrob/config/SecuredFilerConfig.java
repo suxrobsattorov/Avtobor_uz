@@ -17,6 +17,9 @@ public class SecuredFilerConfig {
         FilterRegistrationBean<JwtTokenFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(jwtTokenFilter);
         bean.addUrlPatterns("/profile/private/*");
+        bean.addUrlPatterns("/ShoOrCoPost/private/*");
+        bean.addUrlPatterns("/ShoOrCoPost/private/*");
+        bean.addUrlPatterns("/announcement/private/*");
 
         return bean;
     }

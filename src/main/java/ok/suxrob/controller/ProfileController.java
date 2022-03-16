@@ -33,7 +33,7 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/private")
+    @GetMapping
     public ResponseEntity<?> getAll(HttpServletRequest request) {
         JwtUtil.getProfile(request, ProfileRole.ADMIN);
         return ResponseEntity.ok(profileService.getAll());

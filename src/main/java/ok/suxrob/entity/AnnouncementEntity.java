@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "add_listing")
-public class AddListingEntity {
+@Table(name = "announcement")
+public class AnnouncementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,6 +25,8 @@ public class AddListingEntity {
     @Column(name = "i_want_to", nullable = false)
     private IWantTo iWantTo;
     //make,
+    @Column
+    private String make;
     @Column(nullable = false)
     private Region region;
     @Column(name = "patment_type", nullable = false)
@@ -34,7 +36,11 @@ public class AddListingEntity {
     @Column(name = "price_type", nullable = false)
     private PriceType priceType;
     //Parameters
+    @Column
+    private String parameters;
     //Conditions
+    @Column
+    private String conditions;
     @Column
     private String description;
     //photos
