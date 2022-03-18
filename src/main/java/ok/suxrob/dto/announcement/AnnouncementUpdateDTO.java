@@ -1,8 +1,8 @@
-package ok.suxrob.dto;
+package ok.suxrob.dto.announcement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import ok.suxrob.enums.*;
+import ok.suxrob.enums.announcement.*;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

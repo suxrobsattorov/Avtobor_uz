@@ -1,6 +1,8 @@
-package ok.suxrob.dto;
+package ok.suxrob.dto.announcement;
 
 import lombok.Data;
+import ok.suxrob.enums.announcement.Region;
+import ok.suxrob.enums.announcement.parameters.BodyColor;
 
 @Data
 public class AnnouncementFilterDTO {
@@ -10,4 +12,6 @@ public class AnnouncementFilterDTO {
     private String transmission;
     private Long price;
     private Integer mileage;
+    private Region region;
+    private BodyColor bodyColor;
 }

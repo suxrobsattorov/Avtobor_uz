@@ -2,8 +2,8 @@ package ok.suxrob.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import ok.suxrob.enums.*;
-import ok.suxrob.enums.parameters.*;
+import ok.suxrob.enums.announcement.*;
+import ok.suxrob.enums.announcement.parameters.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

@@ -1,9 +1,9 @@
-package ok.suxrob.dto;
+package ok.suxrob.dto.announcement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import ok.suxrob.enums.*;
-import ok.suxrob.enums.parameters.*;
+import ok.suxrob.enums.announcement.*;
+import ok.suxrob.enums.announcement.parameters.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

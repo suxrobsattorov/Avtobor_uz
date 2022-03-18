@@ -1,11 +1,12 @@
 package ok.suxrob.service;
 
-import ok.suxrob.dto.AnnouncementDTO;
-import ok.suxrob.dto.AnnouncementFilterDTO;
-import ok.suxrob.dto.AnnouncementUpdateDTO;
+import ok.suxrob.dto.announcement.AnnouncementDTO;
+import ok.suxrob.dto.announcement.AnnouncementFilterDTO;
+import ok.suxrob.dto.announcement.AnnouncementUpdateDTO;
 import ok.suxrob.entity.AnnouncementEntity;
 import ok.suxrob.entity.MakeEntity;
 import ok.suxrob.entity.ProfileEntity;
+import ok.suxrob.enums.announcement.AnnouncementSort;
 import ok.suxrob.exceptions.BadRequestException;
 import ok.suxrob.repository.AnnouncementRepository;
 import ok.suxrob.specification.AnnouncementSpecification;
@@ -117,7 +118,7 @@ public class AnnouncementService {
         return true;
     }
 
-    public PageImpl<AnnouncementDTO> filterSpecification(int page, int size, AnnouncementFilterDTO dto) {
+    public Page<AnnouncementDTO> filterSpecification(int page, int size, AnnouncementFilterDTO dto) {
         MakeEntity make = null;
         if (dto.getMakeId() != null) {
             make = makeService.get(dto.getMakeId());
@@ -141,8 +142,37 @@ public class AnnouncementService {
         if (dto.getPrice() != null) {
             specification.and(AnnouncementSpecification.price(dto.getPrice()));
         }
+        if (dto.getBodyColor() != null) {
+            specification.and(AnnouncementSpecification.bodyColor(dto.getBodyColor()));
+        }
+        if (dto.getRegion() != null) {
+            specification.and(AnnouncementSpecification.region(dto.getRegion()));
+        }
 
         Page<AnnouncementEntity> entityPage = announcementRepository.findAll(specification, pageable);
+        List<AnnouncementDTO> dtos = entityPage.getContent().stream()
+                .map(this::toDTO).collect(Collectors.toList());
+
+        return new PageImpl<>(dtos, pageable, entityPage.getTotalElements());
+    }
+
+    public PageImpl<AnnouncementDTO> getSortAll(int page, int size, AnnouncementSort sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+
+        if (sort.equals(AnnouncementSort.NEWER_FIRST)) {
+            pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        }
+        if (sort.equals(AnnouncementSort.OLDER_FIRST)) {
+            pageable = PageRequest.of(page, size, Sort.Direction.ASC, "createdAt");
+        }
+        if (sort.equals(AnnouncementSort.EXPENSIVE_FIRST)) {
+            pageable = PageRequest.of(page, size, Sort.Direction.ASC, "price");
+        }
+        if (sort.equals(AnnouncementSort.CHEAPER_FIRST)) {
+            pageable = PageRequest.of(page, size, Sort.Direction.DESC, "price");
+        }
+
+        Page<AnnouncementEntity> entityPage = announcementRepository.findAll(pageable);
         List<AnnouncementDTO> dtos = entityPage.getContent().stream()
                 .map(this::toDTO).collect(Collectors.toList());
 
