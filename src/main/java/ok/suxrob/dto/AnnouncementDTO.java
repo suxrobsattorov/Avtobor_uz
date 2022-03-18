@@ -8,6 +8,7 @@ import ok.suxrob.enums.parameters.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -71,4 +72,5 @@ public class AnnouncementDTO {
     //Confirmation code
     private Boolean consent;
     private Integer profileId;
+    private LocalDateTime createdAt;
 }

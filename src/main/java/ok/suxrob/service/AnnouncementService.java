@@ -1,14 +1,17 @@
 package ok.suxrob.service;
 
 import ok.suxrob.dto.AnnouncementDTO;
+import ok.suxrob.dto.AnnouncementFilterDTO;
 import ok.suxrob.dto.AnnouncementUpdateDTO;
 import ok.suxrob.entity.AnnouncementEntity;
 import ok.suxrob.entity.MakeEntity;
 import ok.suxrob.entity.ProfileEntity;
 import ok.suxrob.exceptions.BadRequestException;
 import ok.suxrob.repository.AnnouncementRepository;
+import ok.suxrob.specification.AnnouncementSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -114,6 +117,38 @@ public class AnnouncementService {
         return true;
     }
 
+    public PageImpl<AnnouncementDTO> filterSpecification(int page, int size, AnnouncementFilterDTO dto) {
+        MakeEntity make = null;
+        if (dto.getMakeId() != null) {
+            make = makeService.get(dto.getMakeId());
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Specification<AnnouncementEntity> specification =
+                Specification.where(AnnouncementSpecification.idIsNotNull("id"));
+        if (dto.getId() != null) {
+            specification.and(AnnouncementSpecification.equal("id", dto.getId()));
+        }
+        if (dto.getYear() != null) {
+            specification.and(AnnouncementSpecification.equal("year", dto.getYear()));
+        }
+        if (dto.getTransmission() != null) {
+            specification.and(AnnouncementSpecification.transmission(dto.getTransmission()));
+        }
+        if (dto.getMileage() != null) {
+            specification.and(AnnouncementSpecification.equal("mileage", dto.getMileage()));
+        }
+        if (dto.getPrice() != null) {
+            specification.and(AnnouncementSpecification.price(dto.getPrice()));
+        }
+
+        Page<AnnouncementEntity> entityPage = announcementRepository.findAll(specification, pageable);
+        List<AnnouncementDTO> dtos = entityPage.getContent().stream()
+                .map(this::toDTO).collect(Collectors.toList());
+
+        return new PageImpl<>(dtos, pageable, entityPage.getTotalElements());
+    }
+
     public AnnouncementDTO toDTO(AnnouncementEntity entity) {
         AnnouncementDTO dto = new AnnouncementDTO();
         dto.setConsent(entity.getConsent());
@@ -125,6 +160,7 @@ public class AnnouncementService {
         dto.setName(entity.getName());
         dto.setPrice(entity.getPrice());
         dto.setRegion(entity.getRegion());
+        dto.setCreatedAt(entity.getCreatedAt());
         dto.setPaymentType(entity.getPaymentType());
         dto.setIWantTo(entity.getIWantTo());
         dto.setId(entity.getId());

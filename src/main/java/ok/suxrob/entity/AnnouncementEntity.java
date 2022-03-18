@@ -6,6 +6,7 @@ import ok.suxrob.enums.*;
 import ok.suxrob.enums.parameters.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -113,6 +114,8 @@ public class AnnouncementEntity {
     //Confirmation code
     @Column
     private Boolean consent;
+    @Column
+    private LocalDateTime createdAt=LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
