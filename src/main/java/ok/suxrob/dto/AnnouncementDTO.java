@@ -3,6 +3,7 @@ package ok.suxrob.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import ok.suxrob.enums.*;
+import ok.suxrob.enums.parameters.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -24,7 +25,7 @@ public class AnnouncementDTO {
     @NotEmpty(message = "iWantTo must not be empty or null")
     private IWantTo iWantTo;
     //make,
-    private String make;
+    private Integer makeId;
     @NotEmpty(message = "region must not be empty or null")
     private Region region;
     @NotEmpty(message = "paymentType must not be empty or null")
@@ -33,11 +34,41 @@ public class AnnouncementDTO {
     @NotEmpty(message = "priceType must not be empty or null")
     private PriceType priceType;
     //Parameters
-    private String parameters;
+    private Integer year;
+    private Transmission transmission;
+    private Condition condition;
+    private WheelDrive wheelDrive;
+    private Integer seatsCount;
+    private BodyColor bodyColor;
+    private Integer engineSize;
+    private Integer tireSize;
+    private Integer mileAge;
+    private Integer horsePower;
+    private FuelType fuelType;
     //Conditions
-    private String conditions;
+    private Boolean ABS;
+    private Boolean airbags;
+    private Boolean antiSlipRegulator;
+    private Boolean audioSystem;
+    private Boolean cruiseControl;
+    private Boolean gasEquipment;
+    private Boolean heatedSeats;
+    private Boolean parktronic;
+    private Boolean powerWindows;
+    private Boolean sunroof;
+    private Boolean airCondition;
+    private Boolean alloyWheels;
+    private Boolean arcs;
+    private Boolean centralLocking;
+    private Boolean fogLights;
+    private Boolean heatedMirrors;
+    private Boolean navigationSystem;
+    private Boolean powerSteering;
+    private Boolean signaling;
+
     private String description;
     //photos
     //Confirmation code
     private Boolean consent;
+    private Integer profileId;
 }

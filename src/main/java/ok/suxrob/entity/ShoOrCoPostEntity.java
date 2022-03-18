@@ -22,7 +22,7 @@ public class ShoOrCoPostEntity {
     private String title;
     @Column
     private String content;
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false, unique = true)
     private String phone;
     @Column
     private String location;

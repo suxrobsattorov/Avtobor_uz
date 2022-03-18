@@ -13,7 +13,7 @@ public class AnnouncementUpdateDTO {
     private AvtoType avtoType;
     private IWantTo iWantTo;
     //make,
-    private String make;
+    private Integer makeId;
     private Region region;
     private PaymentType paymentType;
     private Long price;

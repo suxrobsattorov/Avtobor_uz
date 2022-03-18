@@ -6,6 +6,7 @@ import ok.suxrob.enums.ProfileRole;
 import ok.suxrob.enums.ProfileType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,4 +46,9 @@ public class ProfileEntity {
     private String instagram;
     @Column
     private String aboutUs;
+
+    @OneToMany(mappedBy = "profile")
+    private List<AnnouncementEntity> announcementEntityList;
+    @OneToMany(mappedBy = "profile")
+    private List<MessageEntity> chatEntityList;
 }
