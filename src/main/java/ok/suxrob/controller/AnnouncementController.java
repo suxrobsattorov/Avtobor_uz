@@ -5,9 +5,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import ok.suxrob.dto.announcement.AnnouncementDTO;
+import ok.suxrob.dto.announcement.AnnouncementFilterDTO;
 import ok.suxrob.dto.announcement.AnnouncementUpdateDTO;
 import ok.suxrob.service.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +30,7 @@ public class AnnouncementController {
             @ApiResponse(code = 400, message = "@ApiResponse(code = 400, message = \"...\")")
     })
     public ResponseEntity<AnnouncementDTO> create(@Valid @RequestBody AnnouncementDTO dto,
-                                                 HttpServletRequest request) {
+                                                  HttpServletRequest request) {
         AnnouncementDTO response = announcementService.create(dto);
         return ResponseEntity.ok(response);
     }
@@ -35,14 +38,20 @@ public class AnnouncementController {
     @GetMapping
     @ApiOperation(value = "Get All on page")
     public ResponseEntity<?> getAll(@RequestParam("page") int page,
-                                    @RequestParam("size") int size){
+                                    @RequestParam("size") int size) {
         return ResponseEntity.ok(announcementService.getAll(page, size));
     }
 
     @GetMapping("/private/{id}")
     public ResponseEntity<AnnouncementDTO> getById(@PathVariable Integer id,
-                                                  HttpServletRequest request) {
+                                                   HttpServletRequest request) {
         return ResponseEntity.ok(announcementService.getById(id));
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<Page<AnnouncementDTO>> filter(Pageable pageable,
+                                                       @RequestBody AnnouncementFilterDTO dto) {
+        return ResponseEntity.ok(announcementService.filterSpecification(pageable, dto));
     }
 
     @PutMapping("/private/{id}")

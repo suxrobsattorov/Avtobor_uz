@@ -118,13 +118,13 @@ public class AnnouncementService {
         return true;
     }
 
-    public Page<AnnouncementDTO> filterSpecification(int page, int size, AnnouncementFilterDTO dto) {
+    public Page<AnnouncementDTO> filterSpecification(Pageable pageable, AnnouncementFilterDTO dto) {
         MakeEntity make = null;
         if (dto.getMakeId() != null) {
             make = makeService.get(dto.getMakeId());
         }
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        pageable.getSortOr(Sort.by(Sort.Direction.DESC, "createdAt"));
         Specification<AnnouncementEntity> specification =
                 Specification.where(AnnouncementSpecification.idIsNotNull("id"));
         if (dto.getId() != null) {
@@ -149,11 +149,7 @@ public class AnnouncementService {
             specification.and(AnnouncementSpecification.region(dto.getRegion()));
         }
 
-        Page<AnnouncementEntity> entityPage = announcementRepository.findAll(specification, pageable);
-        List<AnnouncementDTO> dtos = entityPage.getContent().stream()
-                .map(this::toDTO).collect(Collectors.toList());
-
-        return new PageImpl<>(dtos, pageable, entityPage.getTotalElements());
+        return announcementRepository.findAll(specification, pageable).map(this::toDTO);
     }
 
     public PageImpl<AnnouncementDTO> getSortAll(int page, int size, AnnouncementSort sort) {
