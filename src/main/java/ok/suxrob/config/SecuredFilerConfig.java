@@ -21,6 +21,7 @@ public class SecuredFilerConfig {
         bean.addUrlPatterns("/ShoOrCoPost/private/*");
         bean.addUrlPatterns("/announcement/private/*");
         bean.addUrlPatterns("/make/private/*");
+        bean.addUrlPatterns("/attach/private/*");
 
         return bean;
     }

@@ -17,8 +17,7 @@ public class AttachController {
     @Autowired
     private AttachService attachService;
 
-    @PostMapping("/upload")
-
+    @PostMapping("/private/upload")
     public ResponseEntity<AttachDTO> fileUpload(@RequestParam("file") MultipartFile file) {
         AttachDTO fileName = attachService.saveFile(file);
         return ResponseEntity.ok().body(fileName);
